@@ -1,23 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import Form from './Components/Form/Form';
+import { useState } from 'react';
+import Display from './Components/Display/Display';
 
 function App() {
+  const [formData, setFormData] = useState('');
+  const [showForm, setShowForm] = useState(true);
+
+  const displayFormData = (formData) => {
+    setFormData(formData);
+    setShowForm(false);
+  }
+
+  const clearData = () => {
+    setFormData("");
+    setShowForm(true);
+  }
+
+  if (showForm) {
+    return (
+      <div className="App">
+        <Form passFormData={displayFormData}/>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Display data={formData} clear={clearData}/>
     </div>
   );
 }
