@@ -49,7 +49,7 @@ const Form = ({passFormData}) => {
 
   return (
     <form className={classes.root} onSubmit={handleSubmit}>
-        <Typography variant="h5">Availity Signup Form</Typography>
+        <Typography variant="h5">AvailJS Signup Form</Typography>
         <TextField 
             label="Full Name" 
             variant='filled' 
