@@ -73,7 +73,7 @@ const Form = ({passFormData}) => {
                 onChange={e => setEmail(e.target.value)}
                 />
             <div>
-                <Button variant="contained" color="info" onClick={handleClear}>
+                <Button variant="contained" onClick={handleClear}>
                     Clear
                 </Button>
                 <Button type="submit" variant="contained" color="secondary">
