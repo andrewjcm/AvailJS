@@ -50,7 +50,7 @@ const Form = ({passFormData}) => {
         setPhoneErrorMessage("");
         setFormInvalid(false);
 
-        const re = /^[2-9]\d{8}$/;
+        const re = /\(?[2-9]\d{2}\)?[-. ]?[2-9]\d{2}[-.]?\d{4}$/;
         if (!phone.match(re)) {
             setPhoneInvalid(true);
             setPhoneErrorMessage("Please enter a valid area code and phone number (digits only).")
@@ -65,7 +65,7 @@ const Form = ({passFormData}) => {
         setEmailErrorMessage("");
         setFormInvalid(false);
 
-        const re = /^\w+[_.]?\w+@.+\.\w{1,10}$/;
+        const re = /^\w+[_.]?\w+@\w+-?\w+\.\w{2,10}$/g;
         if (!email.toLowerCase().match(re)) {
             setEmailInvalid(true);
             setEmailErrorMessage("Please enter a valid email address.");
