@@ -71,7 +71,7 @@ const Form = ({passFormData}) => {
   return (
     <form data-testid="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-            <Typography variant="h5">AvailJS Signup Form</Typography>
+            <Typography sx={{textAlign: 'center'}} variant="h5">AvailJS Signup Form</Typography>
             <TextField 
                 label="Full Name" 
                 variant='filled' 
