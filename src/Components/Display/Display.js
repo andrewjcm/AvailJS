@@ -1,6 +1,10 @@
-import React from 'react'
-import { Typography, Button } from '@material-ui/core'
-import { List, ListItem, ListItemText, ListItemAvatar } from '@mui/material';
+import React from 'react';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import BusinessIcon from '@mui/icons-material/Business';
@@ -17,7 +21,7 @@ const Display = ({data, clear}) => {
     }
 
   return (
-    <div>
+    <div data-testid="display">
         <Typography variant="h4">Thank you, {data.fullName.split(" ")[0]}!</Typography>
         <Typography variant='body1'>
             Please review your details:

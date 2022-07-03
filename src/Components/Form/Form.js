@@ -1,26 +1,12 @@
-import { Typography, TextField, Button, makeStyles } from '@material-ui/core'
 import React, { useState } from 'react'
+import './Form.css'
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { Stack } from '@mui/material';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      padding: theme.spacing(2),
-  
-      '& .MuiTextField-root': {
-        margin: theme.spacing(1),
-        width: '300px',
-      },
-      '& .MuiButtonBase-root': {
-        margin: theme.spacing(2),
-      },
-    },
-}));
 
 const Form = ({passFormData}) => {
-    const classes = useStyles();
 
     const [fullName, setFullName] = useState('');
     const [npiNumber, setNpiNumber] = useState('');
@@ -48,51 +34,53 @@ const Form = ({passFormData}) => {
     }
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
-        <Typography variant="h5">AvailJS Signup Form</Typography>
-        <TextField 
-            label="Full Name" 
-            variant='filled' 
-            required
-            value={fullName}
-            onChange={e => setFullName(e.target.value)}
-            />
-        <TextField 
-            label="NPI Number" 
-            variant='filled' 
-            required
-            value={npiNumber}
-            onChange={e => setNpiNumber(e.target.value)}
-            />
-        <TextField 
-            label="Business Address" 
-            variant='filled' 
-            required
-            value={address}
-            onChange={e => setAddress(e.target.value)}
-            />
-        <TextField 
-            label="Telephone Number" 
-            variant='filled' 
-            required
-            value={phone}
-            onChange={e => setPhone(e.target.value)}
-            />
-        <TextField 
-            label="Email" 
-            variant='filled' 
-            required
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            />
-        <div>
-            <Button variant="contained" onClick={handleClear}>
-                Clear
-            </Button>
-            <Button type="submit" variant="contained" color="primary">
-                Submit
-            </Button>
-        </div>
+    <form data-testid="form" onSubmit={handleSubmit}>
+        <Stack spacing={2}>
+            <Typography sx={{textAlign: 'center'}}variant="h5">AvailJS Signup Form</Typography>
+            <TextField 
+                label="Full Name" 
+                variant='filled' 
+                required
+                value={fullName}
+                onChange={e => setFullName(e.target.value)}
+                />
+            <TextField 
+                label="NPI Number" 
+                variant='filled' 
+                required
+                value={npiNumber}
+                onChange={e => setNpiNumber(e.target.value)}
+                />
+            <TextField 
+                label="Business Address" 
+                variant='filled' 
+                required
+                value={address}
+                onChange={e => setAddress(e.target.value)}
+                />
+            <TextField 
+                label="Telephone Number" 
+                variant='filled' 
+                required
+                value={phone}
+                onChange={e => setPhone(e.target.value)}
+                />
+            <TextField 
+                label="Email" 
+                variant='filled' 
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                />
+            <div>
+                <Button variant="contained" color="info" onClick={handleClear}>
+                    Clear
+                </Button>
+                <Button type="submit" variant="contained" color="secondary">
+                    Submit
+                </Button>
+            </div>
+        </Stack>
     </form>
   );
 }

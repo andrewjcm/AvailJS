@@ -19,7 +19,7 @@ function App() {
 
   if (showForm) {
     return (
-      <div className="App">
+      <div className="App" data-testid="app-form">
         <Form passFormData={displayFormData}/>
       </div>
     );

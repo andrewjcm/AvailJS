@@ -1,0 +1,8 @@
+.MuiTextField-root {
+  margin: 3px;
+  width: 300px;
+}
+
+div > .MuiButtonBase-root {
+  margin: 4px;
+}
