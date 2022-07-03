@@ -15,7 +15,6 @@ const Form = ({passFormData}) => {
     const [email, setEmail] = useState('');
     const [phoneInvalid, setPhoneInvalid] = useState(false);
     const [emailInvalid, setEmailInvalid] = useState(false);
-    const [formInvalid, setFormInvalid] = useState(false);
     const [phoneErrorMessage, setPhoneErrorMessage] = useState('');
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
@@ -30,7 +29,6 @@ const Form = ({passFormData}) => {
         setEmailErrorMessage("");
         setPhoneInvalid(false);
         setEmailInvalid(false);
-        setFormInvalid(false);
         
     };
 
@@ -45,32 +43,28 @@ const Form = ({passFormData}) => {
     };
 
     const phoneChange = (e) => {
-        setPhone(e.target.value);
         setPhoneInvalid(false);
         setPhoneErrorMessage("");
-        setFormInvalid(false);
 
         const re = /\(?[2-9]\d{2}\)?[-. ]?[2-9]\d{2}[-.]?\d{4}$/;
-        if (!phone.match(re)) {
+        if (!e.target.value.match(re)) {
             setPhoneInvalid(true);
-            setPhoneErrorMessage("Please enter a valid area code and phone number (digits only).")
-            setFormInvalid(true);
+            setPhoneErrorMessage("Please enter a valid phone number.")
         }
+        setPhone(e.target.value);
 
     };
 
     const emailChange = (e) => {
-        setEmail(e.target.value);
         setEmailInvalid(false);
         setEmailErrorMessage("");
-        setFormInvalid(false);
 
         const re = /^\w+[_.]?\w+@\w+-?\w+\.\w{2,10}$/g;
-        if (!email.toLowerCase().match(re)) {
+        if (!e.target.value.toLowerCase().match(re)) {
             setEmailInvalid(true);
             setEmailErrorMessage("Please enter a valid email address.");
-            setFormInvalid(true);
         }
+        setEmail(e.target.value);
 
     };
 
@@ -121,7 +115,10 @@ const Form = ({passFormData}) => {
                 <Button variant="contained" color="info" onClick={handleClear}>
                     Clear
                 </Button>
-                <Button type="submit" variant="contained" color="secondary" disabled={formInvalid ? true : false}>
+                <Button type="submit" 
+                    variant="contained" 
+                    color="secondary" 
+                    disabled={phoneInvalid || emailInvalid ? true : false}>
                     Submit
                 </Button>
             </div>
