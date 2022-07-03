@@ -5,6 +5,8 @@ import Display from './Components/Display/Display';
 import Form from './Components/Form/Form';
 import ThemeToggle from './Components/ThemeToggle/ThemeToggle';
 import { CssBaseline } from '@mui/material';
+
+
 const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 function AvailJS() {
@@ -26,7 +28,10 @@ function AvailJS() {
 
   return (
     <main className='App'>
-      <ThemeToggle sx={{mb: 5}} onClick={colorMode.toggleColorMode} theme={theme}/>
+      <ThemeToggle sx={{mb: 5}} 
+        onClick={colorMode.toggleColorMode} 
+        theme={theme} 
+        checked={theme.palette.mode === "dark" ? true: false}/>
       {
       showForm
           ? <div data-testid="app-form">
@@ -42,6 +47,7 @@ function AvailJS() {
 
 export default function ToggleColorMode() {
   const [mode, setMode] = useState('dark');
+
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
@@ -65,7 +71,7 @@ export default function ToggleColorMode() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline/>
-        <AvailJS />
+        <AvailJS/>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
