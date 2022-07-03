@@ -13,6 +13,11 @@ const Form = ({passFormData}) => {
     const [address, setAddress] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
+    const [phoneInvalid, setPhoneInvalid] = useState(false);
+    const [emailInvalid, setEmailInvalid] = useState(false);
+    const [formInvalid, setFormInvalid] = useState(false);
+    const [phoneErrorMessage, setPhoneErrorMessage] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
     const handleClear = (e) => {
         e.preventDefault();
@@ -21,6 +26,12 @@ const Form = ({passFormData}) => {
         setAddress("");
         setPhone("");
         setEmail("");
+        setPhoneErrorMessage("");
+        setEmailErrorMessage("");
+        setPhoneInvalid(false);
+        setEmailInvalid(false);
+        setFormInvalid(false);
+        
     };
 
     const handleSubmit = (e) => {
@@ -31,7 +42,37 @@ const Form = ({passFormData}) => {
             phone: phone,
             email: email
         });
-    }
+    };
+
+    const phoneChange = (e) => {
+        setPhone(e.target.value);
+        setPhoneInvalid(false);
+        setPhoneErrorMessage("");
+        setFormInvalid(false);
+
+        const re = /^[2-9]\d{8}$/;
+        if (!phone.match(re)) {
+            setPhoneInvalid(true);
+            setPhoneErrorMessage("Please enter a valid area code and phone number (digits only).")
+            setFormInvalid(true);
+        }
+
+    };
+
+    const emailChange = (e) => {
+        setEmail(e.target.value);
+        setEmailInvalid(false);
+        setEmailErrorMessage("");
+        setFormInvalid(false);
+
+        const re = /^\w+[_.]?\w+@.+\.\w{1,10}$/;
+        if (!email.toLowerCase().match(re)) {
+            setEmailInvalid(true);
+            setEmailErrorMessage("Please enter a valid email address.");
+            setFormInvalid(true);
+        }
+
+    };
 
   return (
     <form data-testid="form" onSubmit={handleSubmit}>
@@ -63,20 +104,24 @@ const Form = ({passFormData}) => {
                 variant='filled' 
                 required
                 value={phone}
-                onChange={e => setPhone(e.target.value)}
+                onChange={phoneChange}
+                error={phoneInvalid ? true : false}
+                helperText={phoneErrorMessage}
                 />
             <TextField 
                 label="Email" 
                 variant='filled' 
                 required
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={emailChange}
+                error={emailInvalid ? true : false}
+                helperText={emailErrorMessage}
                 />
             <div>
                 <Button variant="contained" color="info" onClick={handleClear}>
                     Clear
                 </Button>
-                <Button type="submit" variant="contained" color="secondary">
+                <Button type="submit" variant="contained" color="secondary" disabled={formInvalid ? true : false}>
                     Submit
                 </Button>
             </div>
