@@ -58,7 +58,7 @@ const Display = ({data, clear}) => {
                 <ListItemText primary={data.email}/>
             </ListItem>
         </List>
-        <Button variant="contained" onClick={handleClear}>
+        <Button variant="contained" color="info" onClick={handleClear}>
             Clear
         </Button>
     </div>
