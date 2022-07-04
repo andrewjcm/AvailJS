@@ -7,12 +7,16 @@ import { Stack } from '@mui/material';
 
 
 const Form = ({passFormData}) => {
+    const blankForm = {
+        fullName: "",
+        npiNumber: "",
+        address: "",
+        phone: "",
+        email: ""
+    };
 
-    const [fullName, setFullName] = useState('');
-    const [npiNumber, setNpiNumber] = useState('');
-    const [address, setAddress] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
+    const [formValues, setFormValues] = useState(blankForm);
+
     const [phoneInvalid, setPhoneInvalid] = useState(false);
     const [emailInvalid, setEmailInvalid] = useState(false);
     const [phoneErrorMessage, setPhoneErrorMessage] = useState('');
@@ -20,11 +24,7 @@ const Form = ({passFormData}) => {
 
     const handleClear = (e) => {
         e.preventDefault();
-        setFullName("");
-        setNpiNumber("");
-        setAddress("");
-        setPhone("");
-        setEmail("");
+        setFormValues(blankForm);
         setPhoneErrorMessage("");
         setEmailErrorMessage("");
         setPhoneInvalid(false);
@@ -32,39 +32,38 @@ const Form = ({passFormData}) => {
         
     };
 
-    const handleSubmit = (e) => {
-        passFormData({
-            fullName: fullName,
-            npiNumber: npiNumber,
-            address: address,
-            phone: phone,
-            email: email
-        });
+    const handleSubmit = () => {
+        passFormData(formValues);
     };
 
-    const phoneChange = (e) => {
+    const handleChange = (prop) => (e) => {
+        if (prop === "phone") {
+            validatePhone(e);
+        }
+        else if (prop === "email") {
+            validateEmail(e);
+        }
+        setFormValues({ ...formValues, [prop]: e.target.value });
+      };
+
+    const validatePhone = (e) => {
         setPhoneInvalid(false);
         setPhoneErrorMessage("");
-
         const re = /\(?[2-9]\d{2}\)?[-. ]?[2-9]\d{2}[-.]?\d{4}$/;
         if (!e.target.value.match(re)) {
             setPhoneInvalid(true);
             setPhoneErrorMessage("Please enter a valid phone number.")
         }
-        setPhone(e.target.value);
-
     };
 
-    const emailChange = (e) => {
+    const validateEmail = (e) => {
         setEmailInvalid(false);
         setEmailErrorMessage("");
-
         const re = /^\w+[_.]?\w+@\w+-?\w+\.\w{2,10}$/g;
         if (!e.target.value.toLowerCase().match(re)) {
             setEmailInvalid(true);
             setEmailErrorMessage("Please enter a valid email address.");
         }
-        setEmail(e.target.value);
 
     };
 
@@ -76,29 +75,29 @@ const Form = ({passFormData}) => {
                 label="Full Name" 
                 variant='filled' 
                 required
-                value={fullName}
-                onChange={e => setFullName(e.target.value)}
+                value={formValues.fullName}
+                onChange={handleChange("fullName")}
                 />
             <TextField 
                 label="NPI Number" 
                 variant='filled' 
                 required
-                value={npiNumber}
-                onChange={e => setNpiNumber(e.target.value)}
+                value={formValues.npiNumber}
+                onChange={handleChange("npiNumber")}
                 />
             <TextField 
                 label="Business Address" 
                 variant='filled' 
                 required
-                value={address}
-                onChange={e => setAddress(e.target.value)}
+                value={formValues.address}
+                onChange={handleChange("address")}
                 />
             <TextField 
                 label="Telephone Number" 
                 variant='filled' 
                 required
-                value={phone}
-                onChange={phoneChange}
+                value={formValues.phone}
+                onChange={handleChange("phone")}
                 error={phoneInvalid ? true : false}
                 helperText={phoneErrorMessage}
                 />
@@ -106,8 +105,8 @@ const Form = ({passFormData}) => {
                 label="Email" 
                 variant='filled' 
                 required
-                value={email}
-                onChange={emailChange}
+                value={formValues.email}
+                onChange={handleChange("email")}
                 error={emailInvalid ? true : false}
                 helperText={emailErrorMessage}
                 />
