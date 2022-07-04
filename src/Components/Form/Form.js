@@ -8,27 +8,44 @@ import { Stack } from '@mui/material';
 
 const Form = ({passFormData}) => {
     const blankForm = {
-        fullName: "",
-        npiNumber: "",
-        address: "",
-        phone: "",
-        email: ""
+        fullName: {
+            label: "Full Name",
+            value: "",
+            error: false,
+            message: ""
+        },
+        npiNumber: {
+            label: "NPI Number",
+            value: "",
+            error: false,
+            message: ""
+        },
+        address: {
+            label: "Business Address",
+            value: "",
+            error: false,
+            message: ""
+        },
+        phone: {
+            label: "Telephone Number",
+            value: "",
+            error: false,
+            message: ""
+        },
+        email: {
+            label: "Email",
+            value: "",
+            error: false,
+            message: ""
+        }
     };
 
     const [formValues, setFormValues] = useState(blankForm);
 
-    const [phoneInvalid, setPhoneInvalid] = useState(false);
-    const [emailInvalid, setEmailInvalid] = useState(false);
-    const [phoneErrorMessage, setPhoneErrorMessage] = useState('');
-    const [emailErrorMessage, setEmailErrorMessage] = useState('');
 
     const handleClear = (e) => {
         e.preventDefault();
         setFormValues(blankForm);
-        setPhoneErrorMessage("");
-        setEmailErrorMessage("");
-        setPhoneInvalid(false);
-        setEmailInvalid(false);
         
     };
 
@@ -37,79 +54,59 @@ const Form = ({passFormData}) => {
     };
 
     const handleChange = (prop) => (e) => {
+        const newValue = e.target.value;
         if (prop === "phone") {
-            validatePhone(e);
+            const re = /\(?[2-9]\d{2}\)?[-. ]?[2-9]\d{2}[-.]?\d{4}$/;
+            validate(prop, newValue, re);
         }
         else if (prop === "email") {
-            validateEmail(e);
+            const re = /^\w+[_.]?\w+@\w+-?\w+\.\w{2,10}$/g;
+            validate(prop, newValue, re);
         }
-        setFormValues({ ...formValues, [prop]: e.target.value });
-      };
-
-    const validatePhone = (e) => {
-        setPhoneInvalid(false);
-        setPhoneErrorMessage("");
-        const re = /\(?[2-9]\d{2}\)?[-. ]?[2-9]\d{2}[-.]?\d{4}$/;
-        if (!e.target.value.match(re)) {
-            setPhoneInvalid(true);
-            setPhoneErrorMessage("Please enter a valid phone number.")
+        else {
+            updateFormValues(prop, newValue, "", false);
         }
     };
 
-    const validateEmail = (e) => {
-        setEmailInvalid(false);
-        setEmailErrorMessage("");
-        const re = /^\w+[_.]?\w+@\w+-?\w+\.\w{2,10}$/g;
-        if (!e.target.value.toLowerCase().match(re)) {
-            setEmailInvalid(true);
-            setEmailErrorMessage("Please enter a valid email address.");
+    const validate = (prop, value, regex) => {
+        updateFormValues(prop, value, "", false);
+        if (!value.match(regex)) {
+            const label = formValues[prop].label.toLowerCase();
+            updateFormValues(prop, value, `Please enter a valid ${label}.`, true);
         }
+    };
 
+    const updateFormValues = (prop, newValue, newMessage, isError) => {
+        setFormValues({ 
+            ...formValues,
+            [prop]: {
+                label: formValues[prop].label,
+                value: newValue, 
+                message: newMessage,
+                error: isError
+            }
+        });
     };
 
   return (
     <form data-testid="form" onSubmit={handleSubmit}>
         <Stack spacing={2}>
-            <Typography sx={{textAlign: 'center'}}variant="h5">AvailJS Signup Form</Typography>
-            <TextField 
-                label="Full Name" 
-                variant='filled' 
-                required
-                value={formValues.fullName}
-                onChange={handleChange("fullName")}
-                />
-            <TextField 
-                label="NPI Number" 
-                variant='filled' 
-                required
-                value={formValues.npiNumber}
-                onChange={handleChange("npiNumber")}
-                />
-            <TextField 
-                label="Business Address" 
-                variant='filled' 
-                required
-                value={formValues.address}
-                onChange={handleChange("address")}
-                />
-            <TextField 
-                label="Telephone Number" 
-                variant='filled' 
-                required
-                value={formValues.phone}
-                onChange={handleChange("phone")}
-                error={phoneInvalid ? true : false}
-                helperText={phoneErrorMessage}
-                />
-            <TextField 
-                label="Email" 
-                variant='filled' 
-                required
-                value={formValues.email}
-                onChange={handleChange("email")}
-                error={emailInvalid ? true : false}
-                helperText={emailErrorMessage}
-                />
+            <Typography sx={{textAlign: 'center'}} variant="h5">
+                AvailJS Signup Form
+            </Typography>
+
+            {Object.keys(formValues).map((obj) => (
+                <TextField
+                    key={obj} 
+                    label={formValues[obj].label} 
+                    variant='filled' 
+                    required
+                    value={formValues[obj].value}
+                    onChange={handleChange(obj)}
+                    error={formValues[obj].error}
+                    helperText={formValues[obj].message}
+                    />
+            ))}
             <div>
                 <Button variant="contained" color="info" onClick={handleClear}>
                     Clear
@@ -117,7 +114,7 @@ const Form = ({passFormData}) => {
                 <Button type="submit" 
                     variant="contained" 
                     color="secondary" 
-                    disabled={phoneInvalid || emailInvalid ? true : false}>
+                    disabled={formValues.phone.error || formValues.email.error ? true : false}>
                     Submit
                 </Button>
             </div>

@@ -15,6 +15,27 @@ import EmailIcon from '@mui/icons-material/Email';
 
 const Display = ({data, clear}) => {
 
+    const getIcon = (key) => {
+        if (key === "fullName") {
+            return <AccountCircleIcon/>;
+        }
+        else if (key === "npiNumber") {
+            return <NumbersIcon/>;
+        }
+        else if (key === "address") {
+            return <BusinessIcon/>;
+        }
+        else if (key === "phone") {
+            return <PhoneIcon/>;
+        }
+        else if (key === "email") {
+            return <EmailIcon/>;
+        }
+        else {
+            return <span></span>;
+        }
+    }
+
     const handleClear = (e) => {
         e.preventDefault();
         clear();
@@ -22,41 +43,19 @@ const Display = ({data, clear}) => {
 
   return (
     <div data-testid="display">
-        <Typography variant="h4">Thank you, {data.fullName.split(" ")[0]}!</Typography>
+        <Typography variant="h4">Thank you, {data.fullName.value.split(" ")[0]}!</Typography>
         <Typography variant='body1'>
             Please review your details:
         </Typography>
         <List>
-            <ListItem disablePadding>
-                <ListItemAvatar>
-                    <AccountCircleIcon/>
-                </ListItemAvatar>
-                <ListItemText primary={data.fullName}/>
-            </ListItem >
-            <ListItem disablePadding>
-                <ListItemAvatar>
-                    <NumbersIcon/>
-                </ListItemAvatar>
-                <ListItemText primary={data.npiNumber}/>
-            </ListItem >
-            <ListItem disablePadding>
-                <ListItemAvatar>
-                    <BusinessIcon/>
-                </ListItemAvatar>
-                <ListItemText primary={data.address}/>
-            </ListItem>
-            <ListItem disablePadding>
-                <ListItemAvatar>
-                    <PhoneIcon/>
-                </ListItemAvatar>
-                <ListItemText primary={data.phone}/>
-            </ListItem >
-            <ListItem disablePadding>
-                <ListItemAvatar>
-                    <EmailIcon/>
-                </ListItemAvatar>
-                <ListItemText primary={data.email}/>
-            </ListItem>
+            {Object.entries(data).map(([obj, attr]) => (
+                    <ListItem key={obj} disablePadding>
+                        <ListItemAvatar>
+                            {getIcon(obj)}
+                        </ListItemAvatar>
+                        <ListItemText primary={attr.value}/>
+                    </ListItem >
+            ))}
         </List>
         <Button variant="contained" color="info" onClick={handleClear}>
             Clear
